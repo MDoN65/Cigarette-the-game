@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://135gn4xqrst8"]
+
+[ext_resource type="PackedScene" uid="uid://4td73uo13ajx" path="res://cigarette_-_daily3d/scene.gltf" id="1_uo0w6"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_uo0w6")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -16.06714, -76.42984)

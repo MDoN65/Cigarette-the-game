@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://7n347xvirg6l"]
+
+[ext_resource type="PackedScene" uid="uid://br3f3nyewyccf" path="res://Hand.tscn" id="1_xkndl"]
+[ext_resource type="PackedScene" uid="uid://135gn4xqrst8" path="res://Cigarette.tscn" id="2_u44n3"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sb48q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_t88pq"]
+
+[node name="Game" type="Node3D"]
+
+[node name="Hand" parent="." instance=ExtResource("1_xkndl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2590313, 0, -0.17636871)
+
+[node name="Cigarette" parent="." instance=ExtResource("2_u44n3")]
+transform = Transform3D(0.97514254, 0.08531391, -0.20449604, -0.08715574, 0.9961947, 0, 0.20371787, 0.017823003, 0.9788674, 0.5495161, -0.37896475, 0.5407959)
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -0.7764478, -1.7890763, 1.9533191)
+mesh = SubResource("PlaneMesh_sb48q")
+
+[node name="Wall" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -19.921577, 0.97816485, 1.7658844)
+mesh = SubResource("BoxMesh_t88pq")
+
+[node name="Wall2" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -0.100543976, 0.97816485, 21.582685)
+mesh = SubResource("BoxMesh_t88pq")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.6018151, -0.2888062, 0.7445869, 0, 0.9323238, 0.36162457, -0.7986355, 0.21763113, -0.56108654, 1.5722206, 0.49762326, -0.99469984)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8134112, 1.4676396, -1.8396956)

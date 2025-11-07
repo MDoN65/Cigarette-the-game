@@ -1,0 +1,11 @@
+Model Information:
+* title:	Cigarette - daily3D
+* source:	https://sketchfab.com/3d-models/cigarette-daily3d-eff40b1550e0466a9c3273a519139143
+* author:	RomanMaksy (https://sketchfab.com/RomanMaksy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Cigarette - daily3D" (https://sketchfab.com/3d-models/cigarette-daily3d-eff40b1550e0466a9c3273a519139143) by RomanMaksy (https://sketchfab.com/RomanMaksy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
