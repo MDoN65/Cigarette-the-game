@@ -41,7 +41,7 @@ camera = NodePath(".")
 mouth_offset = Vector3(-0.2, -0.2, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.19618237)
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, -0.19618237)
 script = ExtResource("3_sweqy")
 
 [node name="HandRig" parent="." instance=ExtResource("2_onrkg")]
