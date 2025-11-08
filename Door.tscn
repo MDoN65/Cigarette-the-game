@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bys621a18wmin"]
+[gd_scene load_steps=12 format=3 uid="uid://bys621a18wmin"]
 
 [ext_resource type="Script" uid="uid://dejbsohqa774i" path="res://door.gd" id="1_1vvux"]
 
@@ -68,6 +68,11 @@ _data = {
 &"open": SubResource("Animation_6xaln")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1vvux"]
+properties/0/path = NodePath("Hinge:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="Door" type="Node3D"]
 
 [node name="Hinge" type="Node3D" parent="."]
@@ -92,3 +97,6 @@ shape = SubResource("BoxShape3D_6xaln")
 libraries = {
 &"": SubResource("AnimationLibrary_iu8q0")
 }
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1vvux")
