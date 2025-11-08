@@ -38,12 +38,9 @@ mesh = SubResource("CapsuleMesh_hqtel")
 
 [node name="Head" type="Node3D" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="Head" node_paths=PackedStringArray("hand", "camera", "mouth_marker")]
+[node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 script = ExtResource("2_hqtel")
-hand = NodePath("../../HandRig")
-camera = NodePath(".")
-mouth_marker = NodePath("../../Marker3D")
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
 transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, -0.19618237)
@@ -55,6 +52,3 @@ script = ExtResource("3_i3pqv")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")
-
-[node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38446283, -0.38730922)

@@ -1,15 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://wwyuuswlpxfn"]
+[gd_scene load_steps=11 format=3 uid="uid://wwyuuswlpxfn"]
 
 [ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://djok6gsdo76ew" path="res://world.gd" id="1_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://bys621a18wmin" path="res://Door.tscn" id="3_tlwt5"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_tlwt5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqk2v"]
+albedo_color = Color(0.22151336, 0.38413092, 0.77303517, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
-albedo_color = Color(0.62130654, 0.13607186, 0.3568268, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
+albedo_color = Color(0.6075919, 0.32928434, 0.1217191, 1)
 
 [sub_resource type="Sky" id="Sky_f3sb7"]
 
@@ -27,8 +32,8 @@ player_scene = ExtResource("1_f3sb7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
-mesh = SubResource("BoxMesh_gv5m4")
-surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
+mesh = SubResource("BoxMesh_tlwt5")
+surface_material_override/0 = SubResource("StandardMaterial3D_aqk2v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, -9.496535, 0)
@@ -95,6 +100,10 @@ shadow_enabled = true
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.6255986, -0.5712108, -0.53136104, -0.014442303, -0.6894683, 0.7241718, -0.78001136, -0.44536683, -0.43958008, -4.9135923, 11.965996, -2.0397453)
+shadow_enabled = true
+
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.53582674, 0.6795943, 0.50104016, 0, -0.5934189, 0.8048938, 0.8443279, -0.43128362, -0.3179697, 7.155777, 14.005594, -4.991731)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

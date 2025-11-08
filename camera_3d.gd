@@ -1,70 +1,111 @@
 extends Node3D
 
-@export var hand: Node3D          # your HandRig (world object, not parented to camera)
-@export var camera: Node3D        # your Camera3D (or head node)
-@export var mouth_offset := Vector3(0.08, -0.06, -0.22)
-# offset is in CAMERA LOCAL SPACE: +X right, +Y up, -Z forward
+@export var hand: Node3D
+@export var camera: Node3D
+@export var mouth_marker: Node3D
+@export var mouth_offset := Vector3(-0.2, -0.2, 0)
 
-@export var raise_speed := 8.0    # slide speed toward mouth while held
-@export var lower_speed := 6.0    # slide speed back to rest on release
+@export var raise_speed := 8.0
+@export var lower_speed := 6.0
 @export var align_rotation := false
-@export var rotation_offset_deg := Vector3(0, 0, 0)  # only used if align_rotation = true
+@export var rotation_offset_deg := Vector3(0, 0, 0)
 
 var _rest_local: Transform3D
 var _is_smoking := false
+var _busy := false
 
-func _ready():
-	if hand == null or camera == null:
-		push_error("Assign 'hand' and 'camera' exports.")
+func _ready() -> void:
+	if hand == null:
+		push_error("Assign 'hand'.")
 		set_process(false)
 		set_physics_process(false)
 		return
-	# Save the hand's LOCAL pose so rest follows the player's movement
+
 	_rest_local = hand.transform
+	set_process_input(is_multiplayer_authority())
 
-func _input(event):
+func is_local_player() -> bool:
+	return get_multiplayer_authority() == multiplayer.get_unique_id()
+
+func _input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
 	if event.is_action_pressed("smoke"):
-		_is_smoking = true
+		_request_smoke(true)
 	elif event.is_action_released("smoke"):
-		_is_smoking = false
+		_request_smoke(false)
 
-func _physics_process(delta):
-	if hand == null or camera == null:
+func _request_smoke(want: bool) -> void:
+	# Optional prediction
+	_is_smoking = want
+	if multiplayer.is_server():
+		# Host path: commit immediately and broadcast
+		_commit_smoking(want)
+	else:
+		# Client path: ask server to commit
+		rpc_id(1, "server_set_smoking", want)
+
+@rpc("any_peer", "reliable")
+func server_set_smoking(want: bool) -> void:
+	# Runs on server; only accept from the owning peer
+	if not multiplayer.is_server():
+		return
+	var sender := multiplayer.get_remote_sender_id()
+	if sender != get_multiplayer_authority():
+		return
+	_commit_smoking(want)
+
+func _commit_smoking(want: bool) -> void:
+	_is_smoking = want
+	# Broadcast to everyone, server included
+	rpc("apply_smoking_state", want)
+
+@rpc("reliable", "call_local")
+func apply_smoking_state(want: bool) -> void:
+	_is_smoking = want
+
+func _physics_process(delta: float) -> void:
+	if hand == null:
 		return
 
-	# Build the current REST world transform from parent + saved local
+	# Build current rest pose in world
 	var parent := hand.get_parent() as Node3D
 	var rest_world := parent.global_transform * _rest_local
 
-	# Build the current MOUTH world transform from camera + offset (no marker)
-	var cam_xf := camera.global_transform
-	var mouth_pos := cam_xf * mouth_offset  # transform local offset point to world
-	var mouth_basis := cam_xf.basis
-	if align_rotation:
-		var rot_off := Basis.from_euler(rotation_offset_deg * deg_to_rad(1.0))
-		mouth_basis = mouth_basis * rot_off
+	# Choose target
+	var target_world := rest_world
+	if _is_smoking:
+		if is_local_player():
+			# Local: use camera + offset (camera exists only for owner)
+			if camera:
+				var cam_xf := camera.global_transform
+				var pos := cam_xf * mouth_offset
+				var basis := cam_xf.basis
+				if align_rotation:
+					var rot_off := Basis.from_euler(rotation_offset_deg * deg_to_rad(1.0))
+					basis = basis * rot_off
+				target_world = Transform3D(basis, pos)
+		else:
+			# Remote: use a world-space marker on the head
+			if mouth_marker:
+				var marker_xf := mouth_marker.global_transform
+				var basis := marker_xf.basis
+				if align_rotation:
+					var rot_off := Basis.from_euler(rotation_offset_deg * deg_to_rad(1.0))
+					basis = basis * rot_off
+				target_world = Transform3D(basis, marker_xf.origin)
 
-	var mouth_world := Transform3D(mouth_basis, mouth_pos)
-
-	# Pick target and speed
-	var target = mouth_world if _is_smoking else rest_world
-	var speed = raise_speed if _is_smoking else lower_speed
-
-
-
-	# Blend position (slide) and, optionally, rotation
+	# Slide toward target
 	var from := hand.global_transform
-	var to = target
+	var to := target_world
+	var speed := raise_speed if _is_smoking else lower_speed
 	var alpha = clamp(delta * speed, 0.0, 1.0)
 
-	# position-only slide feels “gamey”—keep rotation unless align_rotation is true
 	var pos := from.origin.lerp(to.origin, alpha)
-
 	var basis := from.basis
 	if align_rotation:
 		var q_from := Quaternion(from.basis)
-		var q_to :=   Quaternion(to.basis)
-		var q := q_from.slerp(q_to, alpha)
-		basis = Basis(q)
+		var q_to := Quaternion(to.basis)
+		basis = Basis(q_from.slerp(q_to, alpha))
 
 	hand.global_transform = Transform3D(basis, pos)
