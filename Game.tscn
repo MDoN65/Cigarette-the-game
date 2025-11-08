@@ -1,61 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://7n347xvirg6l"]
+[gd_scene load_steps=5 format=3 uid="uid://7n347xvirg6l"]
 
 [ext_resource type="PackedScene" uid="uid://br3f3nyewyccf" path="res://Hand.tscn" id="1_xkndl"]
 [ext_resource type="PackedScene" uid="uid://135gn4xqrst8" path="res://Cigarette.tscn" id="2_u44n3"]
-[ext_resource type="Texture2D" uid="uid://c43wx63h21x2r" path="res://T_smoke_flipbook.png" id="3_u44n3"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sb48q"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_t88pq"]
-
-[sub_resource type="Gradient" id="Gradient_u44n3"]
-colors = PackedColorArray(0.9019608, 0.9019608, 0.9019608, 0.7607843, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_sb48q"]
-gradient = SubResource("Gradient_u44n3")
-
-[sub_resource type="Curve" id="Curve_sb48q"]
-_limits = [0.0, 1.0, 0.0, 2.0]
-_data = [Vector2(0.033587784, 0.20371401), 0.0, 0.0, 0, 0, Vector2(0.5282443, 0.9387473), 0.0, 0.0, 0, 0, Vector2(1.5083969, 1), 0.0, 0.0, 0, 0, Vector2(2, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-metadata/_snap_count = 14
-
-[sub_resource type="CurveTexture" id="CurveTexture_t88pq"]
-curve = SubResource("Curve_sb48q")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r0x5m"]
-lifetime_randomness = 0.08
-velocity_pivot = Vector3(0, 2, 0)
-direction = Vector3(0, 1, 0)
-initial_velocity_min = 0.19999999
-initial_velocity_max = 1.0
-gravity = Vector3(0, 0.5, 0)
-scale_min = 0.19999999
-scale_max = 0.9
-scale_curve = SubResource("CurveTexture_t88pq")
-color_ramp = SubResource("GradientTexture1D_sb48q")
-anim_speed_min = 0.35999998
-anim_speed_max = 1.0
-turbulence_enabled = true
-turbulence_noise_speed_random = 0.46
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mrqo"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-vertex_color_is_srgb = true
-albedo_color = Color(0.446777, 0.44677705, 0.44677705, 1)
-albedo_texture = ExtResource("3_u44n3")
-albedo_texture_force_srgb = true
-texture_repeat = false
-billboard_mode = 3
-particles_anim_h_frames = 8
-particles_anim_v_frames = 8
-particles_anim_loop = false
-grow_amount = -0.744
-
-[sub_resource type="QuadMesh" id="QuadMesh_joorw"]
-material = SubResource("StandardMaterial3D_3mrqo")
 
 [node name="Game" type="Node3D"]
 
@@ -82,13 +32,3 @@ transform = Transform3D(-0.6018151, -0.2888062, 0.7445869, 0, 0.9323238, 0.36162
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8134112, 1.4676396, -1.8396956)
-
-[node name="SmokeParticles" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1748284, 0.20959705, 0.6791076)
-layers = 3
-amount = 6
-lifetime = 1.3
-speed_scale = 0.2
-visibility_aabb = AABB(0, 1, 0, 8, 8, 8)
-process_material = SubResource("ParticleProcessMaterial_r0x5m")
-draw_pass_1 = SubResource("QuadMesh_joorw")
