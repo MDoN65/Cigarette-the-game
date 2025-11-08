@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://br3f3nyewyccf"]
+[gd_scene load_steps=3 format=3 uid="uid://br3f3nyewyccf"]
 
 [ext_resource type="PackedScene" uid="uid://dw3nrtqnxr4vy" path="res://hand.glb" id="1_wk3ks"]
+[ext_resource type="PackedScene" uid="uid://135gn4xqrst8" path="res://Cigarette.tscn" id="2_d3vym"]
 
 [node name="Hand" type="Node3D"]
 
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_wk3ks")]
+[node name="Hand Model" parent="." instance=ExtResource("1_wk3ks")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+
+[node name="Cigarette" parent="." instance=ExtResource("2_d3vym")]
+transform = Transform3D(0.87417203, 0.061128058, -0.4817537, -0.06975647, 0.9975641, 0, 0.48058018, 0.033605438, 0.87630665, 0.9214511, -0.3931604, 0.78137183)
