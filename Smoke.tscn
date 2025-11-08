@@ -1,3 +1,64 @@
-[gd_scene format=3 uid="uid://b0gr17asx338n"]
+[gd_scene load_steps=9 format=3 uid="uid://dckd7c3rg0xmc"]
+
+[ext_resource type="Texture2D" uid="uid://c43wx63h21x2r" path="res://T_smoke_flipbook.png" id="1_xcdbq"]
+
+[sub_resource type="Gradient" id="Gradient_lhpvg"]
+colors = PackedColorArray(0.9019608, 0.9019608, 0.9019608, 0.7607843, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_sb48q"]
+gradient = SubResource("Gradient_lhpvg")
+
+[sub_resource type="Curve" id="Curve_0igdl"]
+_limits = [0.0, 1.0, 0.0, 2.0]
+_data = [Vector2(0.033587784, 0.20371401), 0.0, 0.0, 0, 0, Vector2(0.5282443, 0.9387473), 0.0, 0.0, 0, 0, Vector2(1.5083969, 1), 0.0, 0.0, 0, 0, Vector2(2, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_count = 14
+
+[sub_resource type="CurveTexture" id="CurveTexture_t88pq"]
+curve = SubResource("Curve_0igdl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_in24e"]
+lifetime_randomness = 0.08
+velocity_pivot = Vector3(0, 2, 0)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 0.19999999
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0.5, 0)
+scale_min = 0.19999999
+scale_max = 0.9
+scale_curve = SubResource("CurveTexture_t88pq")
+color_ramp = SubResource("GradientTexture1D_sb48q")
+anim_speed_min = 0.35999998
+anim_speed_max = 1.0
+turbulence_enabled = true
+turbulence_noise_speed_random = 0.46
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mrqo"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.446777, 0.44677705, 0.44677705, 1)
+albedo_texture = ExtResource("1_xcdbq")
+albedo_texture_force_srgb = true
+texture_repeat = false
+billboard_mode = 3
+particles_anim_h_frames = 8
+particles_anim_v_frames = 8
+particles_anim_loop = false
+grow_amount = -0.744
+
+[sub_resource type="QuadMesh" id="QuadMesh_ixwg1"]
+material = SubResource("StandardMaterial3D_3mrqo")
 
 [node name="Hand" type="Node3D"]
+
+[node name="SmokeParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05863433, 1.6486657, 7.644551)
+layers = 3
+amount = 6
+lifetime = 1.3
+speed_scale = 0.2
+visibility_aabb = AABB(0, 1, 0, 8, 8, 8)
+process_material = SubResource("ParticleProcessMaterial_in24e")
+draw_pass_1 = SubResource("QuadMesh_ixwg1")
