@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://wwyuuswlpxfn"]
+[gd_scene load_steps=8 format=3 uid="uid://wwyuuswlpxfn"]
 
 [ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://djok6gsdo76ew" path="res://world.gd" id="1_fj7yv"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
-albedo_color = Color(0.17560051, 0.4022931, 0.38721573, 1)
+albedo_color = Color(0.62130654, 0.13607186, 0.3568268, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
 
@@ -17,6 +18,8 @@ sky = SubResource("Sky_f3sb7")
 ambient_light_energy = 0.59
 
 [node name="World" type="Node3D"]
+script = ExtResource("1_fj7yv")
+player_scene = ExtResource("1_f3sb7")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 
@@ -29,11 +32,74 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, -9.496535, 0)
 shape = SubResource("BoxShape3D_f3sb7")
 
+[node name="Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.653471, 8.569988, -0.12235427)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall"]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -7.9123173, 0)
+mesh = SubResource("BoxMesh_gv5m4")
+surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall"]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, -9.496535, 0)
+shape = SubResource("BoxShape3D_f3sb7")
+
+[node name="Wall2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0492344, 2.8082943, -18.233234)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall2"]
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, -2.1029086, 0)
+mesh = SubResource("BoxMesh_gv5m4")
+surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall2"]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, -9.496535, 0)
+shape = SubResource("BoxShape3D_f3sb7")
+
+[node name="Wall3" type="StaticBody3D" parent="."]
+transform = Transform3D(19.999996, 0, 0, 0, 1, 0, 0, 0, 19.999996, 110.91373, 7.203444, 215.56108)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall3"]
+transform = Transform3D(20, 0, 0, 0, 0.9999994, 0, 0, 0, 20, 0.16587973, -7.1045976, -0.30132866)
+mesh = SubResource("BoxMesh_gv5m4")
+surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall3"]
+transform = Transform3D(20, 0, 0, 0, 19.999998, 0, 0, 0, 20, 0, -21.981228, 0)
+shape = SubResource("BoxShape3D_f3sb7")
+
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7683716e-07, 1.6665156, 7.3739414)
+visible = false
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.7071068, 0.7071068, 0, -0.7071068, 0.7071068, 0, 7.3698587, 5.6259556)
+transform = Transform3D(1, 0, 0, 0, 0.7071068, 0.7071068, 0, -0.7071068, 0.7071068, 0, 13.77805, 7.943097)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fj7yv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1151.0
+offset_bottom = 646.0
+color = Color(0.15101978, 0.17886108, 0.4771065, 1)
+
+[node name="Host" type="Button" parent="CanvasLayer"]
+offset_right = 417.0
+offset_bottom = 144.0
+text = "Host"
+
+[node name="Join" type="Button" parent="CanvasLayer"]
+offset_top = 150.0
+offset_right = 417.0
+offset_bottom = 294.0
+text = "Join"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cos4dw4p7lqqr")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="CanvasLayer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/Join" to="." method="_on_join_pressed"]

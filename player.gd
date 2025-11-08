@@ -16,6 +16,7 @@ var pitch := 0.0 # up/down (Head)
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	cam.current = is_multiplayer_authority()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse look
@@ -33,27 +34,28 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta: float) -> void:
-	var wish_dir = get_input_direction()
-	var speed_target = sprint_speed if Input.is_action_pressed("sprint") else move_speed
-	var basis = Basis(Vector3.UP, yaw) # rotate inputs by yaw
+	if is_multiplayer_authority():
+		var wish_dir = get_input_direction()
+		var speed_target = sprint_speed if Input.is_action_pressed("sprint") else move_speed
+		var basis = Basis(Vector3.UP, yaw) # rotate inputs by yaw
 
-	var horizontal_vel: Vector3 = velocity
-	horizontal_vel.y = 0.0
+		var horizontal_vel: Vector3 = velocity
+		horizontal_vel.y = 0.0
 
-	var desired_vel: Vector3 = (basis * wish_dir).normalized() * speed_target
-	var control := accel if is_on_floor() else air_control
-	horizontal_vel = horizontal_vel.lerp(desired_vel, clamp(control * delta, 0.0, 1.0))
+		var desired_vel: Vector3 = (basis * wish_dir).normalized() * speed_target
+		var control := accel if is_on_floor() else air_control
+		horizontal_vel = horizontal_vel.lerp(desired_vel, clamp(control * delta, 0.0, 1.0))
 
-	velocity.x = horizontal_vel.x
-	velocity.z = horizontal_vel.z
+		velocity.x = horizontal_vel.x
+		velocity.z = horizontal_vel.z
 
-	# Gravity & jump
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-	elif Input.is_action_just_pressed("jump"):
-		velocity.y = jump_velocity
+		# Gravity & jump
+		if not is_on_floor():
+			velocity.y -= gravity * delta
+		elif Input.is_action_just_pressed("jump"):
+			velocity.y = jump_velocity
 
-	move_and_slide()
+		move_and_slide()
 
 func get_input_direction() -> Vector3:
 	var dir := Vector3.ZERO
@@ -66,3 +68,6 @@ func get_input_direction() -> Vector3:
 	if Input.is_action_pressed("move_right"):
 		dir.x += 1.0
 	return dir
+	
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
