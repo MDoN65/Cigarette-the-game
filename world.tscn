@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://wwyuuswlpxfn"]
+[gd_scene load_steps=8 format=3 uid="uid://wwyuuswlpxfn"]
 
-[ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="1_f3sb7"]
+[ext_resource type="PackedScene" uid="uid://bjuxmxq05i63m" path="res://player.tscn" id="1_f3sb7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
 
@@ -9,7 +9,11 @@ albedo_color = Color(0.17560051, 0.4022931, 0.38721573, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
+energy_multiplier = 2.06
+
 [sub_resource type="Sky" id="Sky_f3sb7"]
+sky_material = SubResource("ProceduralSkyMaterial_f3sb7")
 
 [sub_resource type="Environment" id="Environment_fj7yv"]
 background_mode = 2
