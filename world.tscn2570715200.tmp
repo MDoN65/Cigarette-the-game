@@ -1,18 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://wwyuuswlpxfn"]
+[gd_scene load_steps=8 format=3 uid="uid://wwyuuswlpxfn"]
 
 [ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="1_f3sb7"]
-[ext_resource type="Texture2D" uid="uid://cgxyxsybutli5" path="res://addons/prototype_materials/Green/Prototype_Grid_Green_05-128x128.png" id="1_fj7yv"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
-lightmap_size_hint = Vector2i(14, 21)
-add_uv2 = true
 
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_tlwt5"]
-albedo_texture = ExtResource("1_fj7yv")
-uv1_scale = Vector3(2, 2, 2)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv5m4"]
+albedo_color = Color(0.17560051, 0.4022931, 0.38721573, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
-size = Vector3(4.998749, 0.28912354, 4.992279)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
 energy_multiplier = 2.06
@@ -30,12 +25,12 @@ ambient_light_energy = 0.59
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(100, 0, 0, 0, 5, 0, 0, 0, 100, -0.0778389, -3, -0.15343666)
+transform = Transform3D(20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("BoxMesh_gv5m4")
-surface_material_override/0 = SubResource("ORMMaterial3D_tlwt5")
+surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0.128479, -3.3228292, -0.026550293)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, -9.496535, 0)
 shape = SubResource("BoxShape3D_f3sb7")
 
 [node name="Player" parent="." instance=ExtResource("1_f3sb7")]

@@ -1,64 +1,66 @@
-[gd_scene load_steps=9 format=3 uid="uid://dckd7c3rg0xmc"]
+[gd_scene load_steps=11 format=3 uid="uid://dckd7c3rg0xmc"]
 
-[ext_resource type="Texture2D" uid="uid://c43wx63h21x2r" path="res://T_smoke_flipbook.png" id="1_xcdbq"]
+[ext_resource type="Shader" uid="uid://s66261q1synw" path="res://SmokeShader.tres" id="1_0igdl"]
+[ext_resource type="ArrayMesh" uid="uid://ceehor5h6wfe7" path="res://staticMesh_cloud.obj" id="3_ixwg1"]
 
-[sub_resource type="Gradient" id="Gradient_lhpvg"]
-colors = PackedColorArray(0.9019608, 0.9019608, 0.9019608, 0.7607843, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_sb48q"]
-gradient = SubResource("Gradient_lhpvg")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jj3ui"]
+render_priority = 0
+shader = ExtResource("1_0igdl")
 
 [sub_resource type="Curve" id="Curve_0igdl"]
-_limits = [0.0, 1.0, 0.0, 2.0]
-_data = [Vector2(0.033587784, 0.20371401), 0.0, 0.0, 0, 0, Vector2(0.5282443, 0.9387473), 0.0, 0.0, 0, 0, Vector2(1.5083969, 1), 0.0, 0.0, 0, 0, Vector2(2, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-metadata/_snap_count = 14
+_data = [Vector2(0, 0.001396656), 0.0, 0.0, 0, 0, Vector2(0.50168735, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0065841675), 0.0, 0.0, 0, 0]
+point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_t88pq"]
+[sub_resource type="CurveTexture" id="CurveTexture_in24e"]
 curve = SubResource("Curve_0igdl")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_in24e"]
-lifetime_randomness = 0.08
-velocity_pivot = Vector3(0, 2, 0)
-direction = Vector3(0, 1, 0)
-initial_velocity_min = 0.19999999
-initial_velocity_max = 1.0
-gravity = Vector3(0, 0.5, 0)
-scale_min = 0.19999999
-scale_max = 0.9
-scale_curve = SubResource("CurveTexture_t88pq")
-color_ramp = SubResource("GradientTexture1D_sb48q")
-anim_speed_min = 0.35999998
-anim_speed_max = 1.0
-turbulence_enabled = true
-turbulence_noise_speed_random = 0.46
+[sub_resource type="Gradient" id="Gradient_0igdl"]
+offsets = PackedFloat32Array(0, 0.99652374)
+colors = PackedColorArray(0.41598046, 0.41598043, 0.4159804, 1, 1, 1, 1, 0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mrqo"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-vertex_color_is_srgb = true
-albedo_color = Color(0.446777, 0.44677705, 0.44677705, 1)
-albedo_texture = ExtResource("1_xcdbq")
-albedo_texture_force_srgb = true
-texture_repeat = false
-billboard_mode = 3
-particles_anim_h_frames = 8
-particles_anim_v_frames = 8
-particles_anim_loop = false
-grow_amount = -0.744
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_in24e"]
+gradient = SubResource("Gradient_0igdl")
 
-[sub_resource type="QuadMesh" id="QuadMesh_ixwg1"]
-material = SubResource("StandardMaterial3D_3mrqo")
+[sub_resource type="Curve" id="Curve_k2tup"]
+_limits = [0.0, 2.0, 0.0, 2.0]
+_data = [Vector2(0, 0.6719873), 0.0, 0.0, 0, 0, Vector2(0.29021373, 1.6161213), 0.0, 0.0, 0, 0, Vector2(1.5140609, 2), 0.0, 0.0, 0, 0, Vector2(2, 0.1414218), 0.0, 0.0, 0, 0]
+point_count = 4
 
-[node name="Hand" type="Node3D"]
+[sub_resource type="CurveTexture" id="CurveTexture_0620w"]
+curve = SubResource("Curve_k2tup")
 
-[node name="SmokeParticles" type="GPUParticles3D" parent="."]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iulj1"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0.04, 1, 0)
+spread = 0.2
+initial_velocity_min = 3.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 1, 0)
+scale_min = 0.01
+scale_max = 0.049999997
+scale_curve = SubResource("CurveTexture_0620w")
+color_ramp = SubResource("GradientTexture1D_in24e")
+alpha_curve = SubResource("CurveTexture_in24e")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.2
+
+[node name="SmokeParticles" type="GPUParticles3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05863433, 1.6486657, 7.644551)
 layers = 3
-amount = 6
-lifetime = 1.3
-speed_scale = 0.2
+material_override = SubResource("ShaderMaterial_jj3ui")
+transparency = 0.49
+extra_cull_margin = 1.7
+lod_bias = 17.354
+gi_mode = 2
+gi_lightmap_texel_scale = 1.008
+amount = 50
+amount_ratio = 0.8981
+lifetime = 2.2199999999999998
+fixed_fps = 60
+interpolate = false
 visibility_aabb = AABB(0, 1, 0, 8, 8, 8)
-process_material = SubResource("ParticleProcessMaterial_in24e")
-draw_pass_1 = SubResource("QuadMesh_ixwg1")
+process_material = SubResource("ParticleProcessMaterial_iulj1")
+draw_pass_1 = ExtResource("3_ixwg1")
