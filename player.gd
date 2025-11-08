@@ -15,7 +15,7 @@ var pitch := 0.0 # up/down (Head)
 @onready var cam: Camera3D = $Head/Camera3D
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	cam.current = is_multiplayer_authority()
 
 func _unhandled_input(event: InputEvent) -> void:

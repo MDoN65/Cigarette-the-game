@@ -8,6 +8,7 @@ func _on_host_pressed() -> void:
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	add_player()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	$CanvasLayer.hide()
 
 func _on_join_pressed() -> void:
