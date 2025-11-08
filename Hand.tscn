@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://br3f3nyewyccf"]
+[gd_scene load_steps=5 format=3 uid="uid://br3f3nyewyccf"]
 
 [ext_resource type="PackedScene" uid="uid://dw3nrtqnxr4vy" path="res://hand.glb" id="1_wk3ks"]
-[ext_resource type="PackedScene" uid="uid://135gn4xqrst8" path="res://Cigarette.tscn" id="2_d3vym"]
+[ext_resource type="PackedScene" uid="uid://icy18c1c0t1e" path="res://Cigarette.tscn" id="2_d3vym"]
+
+[sub_resource type="Animation" id="Animation_g42vq"]
+resource_name = "butterfly_flip"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kirv7"]
+_data = {
+&"butterfly_flip": SubResource("Animation_g42vq")
+}
 
 [node name="Hand" type="Node3D"]
 
@@ -10,3 +18,8 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 
 [node name="Cigarette" parent="." instance=ExtResource("2_d3vym")]
 transform = Transform3D(0.96489745, 0.08441758, -0.2486899, -0.08715574, 0.9961947, 0, 0.24774358, 0.021674752, 0.96858317, 0.87944156, -0.39192134, 0.7430906)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kirv7")
+}
