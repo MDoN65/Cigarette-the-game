@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cos4dw4p7lqqr"]
+[gd_scene load_steps=5 format=3 uid="uid://cos4dw4p7lqqr"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://bixiy6g0t4n2i" path="res://camera_3d.gd" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://br3f3nyewyccf" path="res://Hand.tscn" id="2_onrkg"]
 [ext_resource type="Script" uid="uid://cd2uum7782oml" path="res://hand.gd" id="3_i3pqv"]
 
@@ -17,13 +16,13 @@ shape = SubResource("CapsuleShape3D_sh265")
 
 [node name="Head" type="Node3D" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="Head" node_paths=PackedStringArray("hand", "camera")]
+[node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-script = ExtResource("2_hqtel")
-hand = NodePath("../../HandRig")
-camera = NodePath(".")
-mouth_offset = Vector3(-0.2, -0.2, 0)
+
+[node name="HandMouth" type="Marker3D" parent="Head"]
 
 [node name="HandRig" parent="." instance=ExtResource("2_onrkg")]
 transform = Transform3D(0.03135853, 0, 0.2983566, 0, 0.3, 0, -0.2983566, 0, 0.03135853, -0.4211399, 0.14303541, -0.53525376)
 script = ExtResource("3_i3pqv")
+
+[node name="HandRest" type="Marker3D" parent="."]
