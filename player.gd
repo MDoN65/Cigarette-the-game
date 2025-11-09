@@ -18,6 +18,9 @@ var pitch := 0.0 # up/down (Head)
 @onready var head: Node3D = $Head
 @onready var cam: Camera3D = $Head/Camera3D
 
+@onready var stress := $Stress
+@onready var stress_bar := $CanvasLayer/MarginContainer/StressBar
+
 func _ready() -> void:
 	cam.current = is_multiplayer_authority()
 		
@@ -37,12 +40,18 @@ func _ready() -> void:
 	print("[Player] is_connected?",
 		world_cig.state_changed.is_connected(cb))
 
-	# 🔴 TEST: fire the signal manually to confirm the handler runs
-	world_cig.emit_signal("state_changed", true, -1)
+	# tell Stress where the UI bar is
+	if stress and stress_bar:
+		stress.bar_path = stress_bar.get_path()
 
 func _on_cig_state_changed(is_held: bool, holder_peer_id: int) -> void:
 	print("[Player] _on_cig_state_changed fired! is_held=", is_held, " holder=", holder_peer_id)
-	toggle_holding_cig(is_held and holder_peer_id == multiplayer.get_unique_id())
+	var am_holder := holder_peer_id == multiplayer.get_unique_id()
+	toggle_holding_cig(is_held and am_holder)
+
+	# 🔗 allow smoking relief only if we actually hold the cig
+	if stress:
+		stress.set_can_smoke(is_held and am_holder)
 
 func toggle_holding_cig(is_holding: bool):
 	var HandRig = get_node("HandRig")
@@ -99,6 +108,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		try_pickup_cig_from_world()
 	elif event.is_action("drop"):
 		try_drop_cig_to_world()
+
+	# Hold to smoke (you can map "smoke" in Input Map)
+	if event.is_action_pressed("smoke"):
+		if stress:
+			stress.set_smoking(true)
+	elif event.is_action_released("smoke"):
+		if stress:
+			stress.set_smoking(false)
 
 func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():

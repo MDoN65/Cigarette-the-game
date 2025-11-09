@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cos4dw4p7lqqr"]
+[gd_scene load_steps=10 format=3 uid="uid://cos4dw4p7lqqr"]
 
 [ext_resource type="Script" uid="uid://c1hriimtbg5jr" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://dtat2napt1gtx" path="res://stress.gd" id="1_hqtel"]
 [ext_resource type="Script" uid="uid://bixiy6g0t4n2i" path="res://camera_3d.gd" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://br3f3nyewyccf" path="res://Hand.tscn" id="2_onrkg"]
 [ext_resource type="Script" uid="uid://cd7f3hgoxj4j8" path="res://PlayerRaycast.gd" id="3_sweqy"]
@@ -56,3 +57,16 @@ replication_config = SubResource("SceneReplicationConfig_hqtel")
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38446283, -0.38730922)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+offset_right = 467.0
+offset_bottom = 27.0
+
+[node name="StressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="Stress" type="Node" parent="."]
+script = ExtResource("1_hqtel")
+bar_path = NodePath("../CanvasLayer/MarginContainer/StressBar")
