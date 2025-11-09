@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://wwyuuswlpxfn"]
+[gd_scene load_steps=16 format=3 uid="uid://wwyuuswlpxfn"]
 
 [ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://djok6gsdo76ew" path="res://world.gd" id="1_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://4td73uo13ajx" path="res://cigarette_-_daily3d/scene.gltf" id="3_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://bys621a18wmin" path="res://Door.tscn" id="3_tlwt5"]
+[ext_resource type="Script" uid="uid://bh3ji5b0ieaeq" path="res://cigarette_-_daily3d/scene.gd" id="5_036b0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tlwt5"]
 
@@ -23,6 +25,13 @@ background_mode = 2
 sky = SubResource("Sky_f3sb7")
 ambient_light_color = Color(0.16790631, 0.33123088, 0.542728, 1)
 ambient_light_energy = 0.59
+
+[sub_resource type="BoxMesh" id="BoxMesh_aqk2v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_036b0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aqk2v"]
+size = Vector3(1.4338379, 1.0102539, 1.2158203)
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_fj7yv")
@@ -67,7 +76,7 @@ shape = SubResource("BoxShape3D_f3sb7")
 transform = Transform3D(19.999996, 0, 0, 0, 1, 0, 0, 0, 19.999996, 110.91373, 7.203444, 215.56108)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Wall3"]
-transform = Transform3D(20, 0, 0, 0, 0.9999993, 0, 0, 0, 20, 0.16587973, -6.7014136, -0.30132866)
+transform = Transform3D(2, 0, 0, 0, 0.9999999, 0, 0, 0, 2, -5.4332366, -6.7014127, -9.282135)
 mesh = SubResource("BoxMesh_gv5m4")
 surface_material_override/0 = SubResource("StandardMaterial3D_gv5m4")
 
@@ -131,5 +140,26 @@ text = "Join"
 _spawnable_scenes = PackedStringArray("uid://cos4dw4p7lqqr")
 spawn_path = NodePath("..")
 
+[node name="Table" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51990235, -6.1380444)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Table"]
+mesh = SubResource("BoxMesh_aqk2v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Table"]
+shape = SubResource("BoxShape3D_036b0")
+
+[node name="TableCig" parent="Table" instance=ExtResource("3_aqk2v")]
+transform = Transform3D(0.99148357, 0, -0.13023202, 0, 1, 0, 0.13023202, 0, 0.99148357, 1.0227458, -1.1643941, -7.3651047)
+script = ExtResource("5_036b0")
+
+[node name="Area3D" type="Area3D" parent="Table/TableCig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08694661, 1.6843424, 8.031462)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Table/TableCig/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104489505, -0.005126953, -0.088205814)
+shape = SubResource("BoxShape3D_aqk2v")
+
 [connection signal="pressed" from="CanvasLayer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Join" to="." method="_on_join_pressed"]
+[connection signal="area_entered" from="Table/TableCig/Area3D" to="Table/TableCig" method="_on_area_3d_area_entered"]

@@ -7,6 +7,10 @@ extends CharacterBody3D
 @export var mouse_sens: float = 0.12
 @export var jump_velocity: float = 4.5
 
+@export var drop_forward := 1.2
+@export var drop_height := 0.3
+var world_cig: Node = null
+
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var yaw := 0.0   # left/right (Player)
 var pitch := 0.0 # up/down (Head)
@@ -15,8 +19,66 @@ var pitch := 0.0 # up/down (Head)
 @onready var cam: Camera3D = $Head/Camera3D
 
 func _ready() -> void:
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	cam.current = is_multiplayer_authority()
+		
+	world_cig = get_tree().get_first_node_in_group("SharedCigarette")
+	print("[Player] world_cig =", world_cig)
+
+	if world_cig == null:
+		push_error("[Player] No node in group 'SharedCigarette'")
+		return
+
+	print("[Player] has_signal(state_changed)?", world_cig.has_signal("state_changed"))
+
+	var cb := Callable(self, "_on_cig_state_changed")
+	var err = world_cig.state_changed.connect(cb)
+	print("[Player] connect err =", err)  # 0 == OK
+
+	print("[Player] is_connected?",
+		world_cig.state_changed.is_connected(cb))
+
+	# 🔴 TEST: fire the signal manually to confirm the handler runs
+	world_cig.emit_signal("state_changed", true, -1)
+
+func _on_cig_state_changed(is_held: bool, holder_peer_id: int) -> void:
+	print("[Player] _on_cig_state_changed fired! is_held=", is_held, " holder=", holder_peer_id)
+	toggle_holding_cig(is_held and holder_peer_id == multiplayer.get_unique_id())
+
+func toggle_holding_cig(is_holding: bool):
+	var HandRig = get_node("HandRig")
+	print(HandRig)
+	HandRig.set_show_cigarette(is_holding)
+
+func try_pickup_cig_from_world() -> void:
+	if world_cig == null: return
+	if world_cig.global_position.distance_to(global_position) > 2.0:
+		return
+
+	var my_id := multiplayer.get_unique_id()
+
+	if multiplayer.is_server() or not multiplayer.has_multiplayer_peer():
+		# Host or single-player: run locally
+		world_cig.req_pickup(my_id)
+	else:
+		# Client -> server (peer 1)
+		world_cig.rpc_id(1, "req_pickup", my_id)
+
+
+func try_drop_cig_to_world() -> void:
+	if world_cig == null: return
+	var f := -global_transform.basis.z.normalized()
+	var drop_pos := global_transform.origin + f * drop_forward + Vector3(0, drop_height, 0)
+	var drop_xform := Transform3D(Basis(), drop_pos)  # lay flat; adjust if needed
+    
+	var my_id := multiplayer.get_unique_id()
+    
+	if multiplayer.is_server() or not multiplayer.has_multiplayer_peer():
+		# Host or single-player: run locally
+		world_cig.req_drop(my_id, drop_xform)
+	else:
+		# Client -> server (peer 1)
+		world_cig.rpc_id(1, "req_drop", my_id, drop_xform)
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse look
@@ -32,6 +94,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	elif event is InputEventMouseButton and event.pressed and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
+	if event.is_action("interact"):
+		try_pickup_cig_from_world()
+	elif event.is_action("drop"):
+		try_drop_cig_to_world()
 
 func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():

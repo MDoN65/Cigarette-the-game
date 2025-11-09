@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://135gn4xqrst8"]
 
-[ext_resource type="Script" path="res://cigarette.gd" id="1_gjxae"]
+[ext_resource type="Script" uid="uid://xv1kitpj2x6b" path="res://cigarette.gd" id="1_gjxae"]
 [ext_resource type="PackedScene" uid="uid://4td73uo13ajx" path="res://cigarette_-_daily3d/scene.gltf" id="1_uo0w6"]
 [ext_resource type="PackedScene" uid="uid://dckd7c3rg0xmc" path="res://Smoke.tscn" id="3_kvvnx"]
 
@@ -10,5 +10,5 @@ script = ExtResource("1_gjxae")
 [node name="Cig Model" parent="." instance=ExtResource("1_uo0w6")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -16.06714, -76.42984)
 
-[node name="Hand" parent="." instance=ExtResource("3_kvvnx")]
+[node name="Smoke" parent="." instance=ExtResource("3_kvvnx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.53186333, -1.0120264, -7.631875)

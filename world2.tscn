@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://cc40imjuwcgur"]
+
+[ext_resource type="Texture2D" uid="uid://dflhvh4s2w0ap" path="res://Assets/grid_texture.tres" id="1_bkyvu"]
+[ext_resource type="Script" uid="uid://bbjgjfk1ufdfx" path="res://world_2.gd" id="1_xljjp"]
+[ext_resource type="PackedScene" uid="uid://cos4dw4p7lqqr" path="res://player.tscn" id="2_bkyvu"]
+[ext_resource type="PackedScene" uid="uid://bo4s5ntu04w0k" path="res://item_cigarette.tscn" id="4_xdth8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bkyvu"]
+albedo_texture = ExtResource("1_bkyvu")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xljjp"]
+albedo_texture = ExtResource("1_bkyvu")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xljjp"]
+sky_top_color = Color(0.81362486, 0.15278926, 0.05495467, 1)
+sky_horizon_color = Color(0.51028955, 0.7132468, 0.54901505, 1)
+sky_curve = 0.11367873
+
+[sub_resource type="Sky" id="Sky_xljjp"]
+sky_material = SubResource("ProceduralSkyMaterial_xljjp")
+
+[sub_resource type="Environment" id="Environment_xljjp"]
+background_mode = 2
+sky = SubResource("Sky_xljjp")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[node name="World2" type="Node3D"]
+script = ExtResource("1_xljjp")
+player_scene = ExtResource("2_bkyvu")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0045166, 0, 0)
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_bkyvu")
+
+[node name="Wall" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 0)
+size = Vector3(1, 3, 11)
+material = SubResource("StandardMaterial3D_xljjp")
+
+[node name="Wall2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
+size = Vector3(1, 3, 11)
+material = SubResource("StandardMaterial3D_xljjp")
+
+[node name="Wall3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1, 1, -5)
+size = Vector3(1, 3, 11)
+material = SubResource("StandardMaterial3D_xljjp")
+
+[node name="Wall4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-1.1920929e-07, 0, 1, 0, 1, 0, -1, 0, -1.1920929e-07, -1, 1, 5)
+size = Vector3(1, 3, 11)
+material = SubResource("StandardMaterial3D_xljjp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1151.0
+offset_bottom = 646.0
+color = Color(0.15101978, 0.17886108, 0.4771065, 1)
+
+[node name="Host" type="Button" parent="CanvasLayer"]
+offset_right = 417.0
+offset_bottom = 144.0
+text = "Host"
+
+[node name="Join" type="Button" parent="CanvasLayer"]
+offset_top = 150.0
+offset_right = 417.0
+offset_bottom = 294.0
+text = "Join"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xljjp")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.8582262, -0.45067814, 0.24563606, 0, 0.47856924, 0.8780498, -0.51327163, -0.7535653, 0.41072065, 1.4837242, 4.4969764, 2.5008206)
+light_energy = 5.026
+shadow_enabled = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cos4dw4p7lqqr")
+spawn_path = NodePath("..")
+
+[node name="item_cigarette" parent="." instance=ExtResource("4_xdth8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3177456, 0.5412512, 1.0612568)
+
+[connection signal="pressed" from="CanvasLayer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/Join" to="." method="_on_join_pressed"]

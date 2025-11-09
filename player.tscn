@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cos4dw4p7lqqr"]
+[gd_scene load_steps=9 format=3 uid="uid://cos4dw4p7lqqr"]
 
 [ext_resource type="Script" uid="uid://c1hriimtbg5jr" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://bixiy6g0t4n2i" path="res://camera_3d.gd" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://br3f3nyewyccf" path="res://Hand.tscn" id="2_onrkg"]
-[ext_resource type="Script" uid="uid://cd2uum7782oml" path="res://hand.gd" id="3_i3pqv"]
 [ext_resource type="Script" uid="uid://cd7f3hgoxj4j8" path="res://PlayerRaycast.gd" id="3_sweqy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sh265"]
@@ -51,7 +50,6 @@ script = ExtResource("3_sweqy")
 
 [node name="HandRig" parent="." instance=ExtResource("2_onrkg")]
 transform = Transform3D(0.03135853, 0, 0.2983566, 0, 0.3, 0, -0.2983566, 0, 0.03135853, -0.4211399, 0.14303541, -0.53525376)
-script = ExtResource("3_i3pqv")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hqtel")

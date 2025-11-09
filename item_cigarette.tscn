@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bo4s5ntu04w0k"]
+
+[ext_resource type="PackedScene" uid="uid://4td73uo13ajx" path="res://cigarette_-_daily3d/scene.gltf" id="1_1pkuy"]
+[ext_resource type="Script" uid="uid://b5mi7smjxkm2r" path="res://item_cigarette.gd" id="1_gtbhq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1pkuy"]
+size = Vector3(3.643921, 0.34936523, 0.35211182)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gtbhq"]
+size = Vector3(2.4606934, 2.2492676, 2.576416)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1pkuy"]
+
+[node name="item_cigarette" type="RigidBody3D" groups=["SharedCigarette"]]
+script = ExtResource("1_gtbhq")
+
+[node name="cig_mesh" parent="." instance=ExtResource("1_1pkuy")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -0.050056577, -4.941758, -23.04123)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.042901613, 0.06856693, -0.10827182)
+shape = SubResource("BoxShape3D_1pkuy")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1529541, 0.008666992, 0.056274414)
+shape = SubResource("BoxShape3D_gtbhq")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1pkuy")
