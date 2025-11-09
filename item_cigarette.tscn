@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bo4s5ntu04w0k"]
+[gd_scene load_steps=7 format=3 uid="uid://bo4s5ntu04w0k"]
 
 [ext_resource type="PackedScene" uid="uid://4td73uo13ajx" path="res://cigarette_-_daily3d/scene.gltf" id="1_1pkuy"]
 [ext_resource type="Script" uid="uid://b5mi7smjxkm2r" path="res://item_cigarette.gd" id="1_gtbhq"]
+[ext_resource type="PackedScene" uid="uid://dckd7c3rg0xmc" path="res://Smoke.tscn" id="3_rd5f7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1pkuy"]
 size = Vector3(3.643921, 0.34936523, 0.35211182)
@@ -29,3 +30,6 @@ shape = SubResource("BoxShape3D_gtbhq")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_1pkuy")
+
+[node name="Smoke" parent="." instance=ExtResource("3_rd5f7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0709039, -1.5912381, -7.7539597)
