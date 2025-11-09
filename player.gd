@@ -23,6 +23,14 @@ var pitch := 0.0 # up/down (Head)
 
 func _ready() -> void:
 	cam.current = is_multiplayer_authority()
+	
+	# Only show UI for local player
+	var canvas_layer = get_node_or_null("CanvasLayer")
+	if canvas_layer:
+		canvas_layer.visible = is_multiplayer_authority()
+	
+	if stress_bar:
+		stress_bar.visible = is_multiplayer_authority()
 		
 	world_cig = get_tree().get_first_node_in_group("SharedCigarette")
 	print("[Player] world_cig =", world_cig)
@@ -40,8 +48,8 @@ func _ready() -> void:
 	print("[Player] is_connected?",
 		world_cig.state_changed.is_connected(cb))
 
-	# tell Stress where the UI bar is
-	if stress and stress_bar:
+	# tell Stress where the UI bar is - only for local player
+	if stress and stress_bar and is_multiplayer_authority():
 		stress.bar_path = stress_bar.get_path()
 
 func _on_cig_state_changed(is_held: bool, holder_peer_id: int) -> void:
@@ -121,12 +129,12 @@ func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():
 		var wish_dir = get_input_direction()
 		var speed_target = sprint_speed if Input.is_action_pressed("sprint") else move_speed
-		var basis = Basis(Vector3.UP, yaw) # rotate inputs by yaw
+		var movement_basis = Basis(Vector3.UP, yaw) # rotate inputs by yaw
 
 		var horizontal_vel: Vector3 = velocity
 		horizontal_vel.y = 0.0
 
-		var desired_vel: Vector3 = (basis * wish_dir).normalized() * speed_target
+		var desired_vel: Vector3 = (movement_basis * wish_dir).normalized() * speed_target
 		var control := accel if is_on_floor() else air_control
 		horizontal_vel = horizontal_vel.lerp(desired_vel, clamp(control * delta, 0.0, 1.0))
 

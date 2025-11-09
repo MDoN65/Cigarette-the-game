@@ -49,6 +49,11 @@ func get_stress() -> float:
 	return _stress
 
 func _process(delta: float) -> void:
+	# Only process stress for the local player (authority)
+	var player = get_parent()
+	if player and player.has_method("is_multiplayer_authority") and not player.is_multiplayer_authority():
+		return
+		
 	var prev := _stress
 
 	if _is_smoking:
